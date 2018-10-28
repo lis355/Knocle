@@ -1,0 +1,92 @@
+@import "~bootstrap/scss/bootstrap";
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background: transparent;
+}
+
+.main {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+}
+
+.form {
+	margin: 3px;
+	padding: 0 5px 5px 5px;
+
+	background-color: #f5f5f5;
+	border-radius: 5px;
+	color: black;
+	box-shadow: 0 1px 3px 0;
+
+	flex: 1;
+	display: flex;
+	flex-flow: column;
+
+	.header {
+		height: 22px;
+		-webkit-app-region: drag;
+
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+
+		.buttons {
+			list-style: none;
+
+			display: flex;
+
+			div {
+				$r: 12px;
+				width: $r;
+				height: $r;
+				margin-left: $r / 2;
+				border-radius: $r;
+				background-color: #e1e1e1;
+				transition: background-color 0.2s ease-in-out;
+			}
+
+			#minimizeButton {
+				background-color: #FEBF3C;
+			}
+
+			#maximizeButton {
+				background-color: #35CC48;
+			}
+
+			#closeButton {
+				background-color: #FC635C;
+
+				&:hover {
+					background-color: #061afc;
+				}
+			}
+		}
+	}
+
+	.delimeter {
+		background-color: #e1e1e1;
+		height: 1px;
+	}
+
+	.content {
+		flex: 1;
+
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+canvas {
+	border: 1px solid black;
+	margin: 20px;
+}
