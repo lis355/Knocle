@@ -1,0 +1,135 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background: transparent;
+}
+
+.main {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+}
+
+$color-navy: #001F3F;
+$color-blue: #0074D9;
+$color-aqua: #7FDBFF;
+$color-teal: #39CCCC;
+$color-olive: #3D9970;
+$color-green: #2ECC40;
+$color-lime: #01FF70;
+$color-yellow: #FFDC00;
+$color-orange: #FF851B;
+$color-red: #FF4136;
+$color-fuchsia: #F012BE;
+$color-purple: #B10DC9;
+$color-maroon: #85144B;
+$color-white: #FFFFFF;
+$color-gray: #dcdcdc;
+$color-silver: #f5f5f5;
+$color-black: #111111;
+
+.form {
+	margin: 3px;
+	padding: 0 5px 5px 5px;
+
+	background-color: $color-silver;
+	border-radius: 5px;
+	color: $color-black;
+	box-shadow: 0 1px 3px 0;
+
+	flex: 1;
+	display: flex;
+	flex-flow: column;
+
+	.header {
+		height: 22px;
+
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+
+		.toolbar {
+			-webkit-app-region: drag;
+			flex: 1;
+			height: 100%;
+		}
+
+		.buttons {
+			list-style: none;
+
+			display: flex;
+
+			div {
+				$r: 12px;
+				width: $r;
+				height: $r;
+				margin-left: $r / 2;
+				border-radius: $r;
+				background-color: $color-silver;
+				transition: background-color 0.2s ease-in-out;
+			}
+
+			#minimizeButton {
+				background-color: $color-gray;
+
+				&.focus {
+					background-color: $color-yellow;
+
+					&:hover {
+						background-color: darken($color-yellow, 10%)
+					}
+				}
+			}
+
+			#maximizeButton {
+				background-color: $color-gray;
+
+				&.focus {
+					background-color: $color-green;
+
+					&:hover {
+						background-color: darken($color-green, 10%)
+					}
+				}
+			}
+
+			#closeButton {
+				background-color: $color-gray;
+
+				&.focus {
+					background-color: $color-red;
+
+					&:hover {
+						background-color: darken($color-red, 20%)
+					}
+				}
+			}
+		}
+	}
+
+	.delimeter {
+		background-color: $color-gray;
+		height: 1px;
+	}
+
+	.content {
+		flex: 1;
+
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+canvas {
+	border: 1px solid black;
+	margin: 20px;
+}
