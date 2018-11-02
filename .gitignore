@@ -1,5 +1,11 @@
-dist
-node_modules
-.idea/
+/dist
+/node_modules
+/.idea
+/build
 
 package-lock.json
+
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
