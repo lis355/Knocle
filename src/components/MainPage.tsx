@@ -1,27 +1,30 @@
 import React, {Component} from "react";
 
-const qr = require("qrcode");
+import qrcode from "qrcode-generator";
 
 class MainPage extends Component<any, any> {
 	constructor(props: object) {
 		super(props);
+
+		this.state = {};
 	}
 
-	handleGenerate() {
-		let qrCanvas = document.getElementById("qrCanvas");
-		if (qrCanvas) {
+	handleGenerate = () => {
+		// TODO to data --> state
 
-			// TODO to data --> state
-			qr.toCanvas(qrCanvas, "https://www.npmjs.com/package/qrcode#options", {errorCorrectionLevel: "H"});
-
-			qrCanvas.hidden = false;
-		}
-	}
+		let typeNumber: TypeNumber = 0;
+		let errorCorrectionLevel: ErrorCorrectionLevel = "H";
+		let qr = qrcode(typeNumber, errorCorrectionLevel);
+		qr.addData(Math.random().toString());
+		qr.make();
+		let qrDataUrl = qr.createDataURL(5, 5);
+		this.setState({qrDataUrl: qrDataUrl});
+	};
 
 	render() {
 		return [
 			<button id="btn" className="btn btn-outline-success" onClick={this.handleGenerate}>Generate</button>,
-			<canvas id="qrCanvas" hidden/>
+			<div>{this.state.qrDataUrl && <img className="qrcode" src={this.state.qrDataUrl}/>}</div>
 		];
 	}
 }
