@@ -1,10 +1,10 @@
 const {app, BrowserWindow, ipcMain} = require("electron");
-const {client} = require("electron-connect");
 
 let mainWindow;
 
 function createWindow() {
 	mainWindow = new BrowserWindow({
+		show: false,
 		frame: false,
 		autoHideMenuBar: true,
 		width: 600,
@@ -12,11 +12,16 @@ function createWindow() {
 		minWidth: 600,
 		minHeight: 400,
 		transparent: true,
-		icon: `./build/icon.png`
+		icon: null
 	});
 
-	mainWindow.loadURL(`file:/ /${__dirname}/../dist/index.html`);
-	mainWindow.setAlwaysOnTop(true);
+	mainWindow.loadURL("http://localhost:9000");
+
+	//mainWindow.setAlwaysOnTop(true);
+
+	mainWindow.once("ready-to-show", () => {
+		mainWindow.show();
+	});
 
 	mainWindow.on("closed", function () {
 		mainWindow = null;
@@ -49,8 +54,8 @@ function createWindow() {
 		mainWindow.close();
 	});
 
-	if (process.env.HOT_RELOAD)
-		client.create(mainWindow);
+	// if (process.env.HOT_RELOAD)
+	// 	client.create(mainWindow);
 }
 
 app.on("ready", createWindow);

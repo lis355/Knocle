@@ -1,36 +1,26 @@
 import React, {Component} from "react";
+import {isRender, onElectronMessage, sendElectronMessage} from "../utils/communication";
 
+let classNames = require("classnames");
 const qr = require("qrcode");
 
-/*
-const {ipcRenderer} = require("electron");
+import packageJson from "../../package.json";
 
-function focusHeaderButtons() {
-	$(".form .buttons div").toggleClass("focus");
-}
+class App extends Component<any, any> {
+	constructor(props: object) {
+		super(props);
 
-ipcRenderer.on("hasLooseFocus", (event, looseFocus) => {
-	focusHeaderButtons();
-});
+		this.state = {
+			focus: false
+		};
+	}
 
-$(async () => {
-	focusHeaderButtons();
+	componentDidMount() {
+		onElectronMessage("hasLooseFocus", (event: any, looseFocus: boolean) => {
+			this.setState({focus: !looseFocus});
+		});
+	}
 
-	$("#minimizeButton").click(() => {
-		ipcRenderer.send("minimize");
-	});
-
-	$("#maximizeButton").click(() => {
-		ipcRenderer.send("maximize");
-	});
-
-	$("#closeButton").click(() => {
-		ipcRenderer.send("close");
-	});
-});
-*/
-
-class App extends Component {
 	handleGenerate() {
 		let qrCanvas = document.getElementById("qrCanvas");
 		if (qrCanvas) {
@@ -42,16 +32,30 @@ class App extends Component {
 		}
 	}
 
+	handleMinimize() {
+		sendElectronMessage("minimize");
+	}
+
+	handleMaximize() {
+		sendElectronMessage("maximize");
+	}
+
+	handleClose() {
+		sendElectronMessage("close");
+	}
+
 	render() {
 		return (
 			<div className="main">
-				<div className={`form${process.env.NODE_ENV === "development" ? " form-debug" : ""}`}>
+				<div className={classNames({"form": true, "form-browser": !isRender()})}>
 					<div className="header">
-						<div className="toolbar"/>
+						<div className="toolbar">
+							<i>{`${packageJson.name} ${packageJson.version}`}</i>
+						</div>
 						<div className="buttons">
-							<div id="minimizeButton"/>
-							<div id="maximizeButton"/>
-							<div id="closeButton"/>
+							<div id="minimizeButton" className={classNames({"focus": this.state.focus})} onClick={this.handleMinimize}/>
+							<div id="maximizeButton" className={classNames({"focus": this.state.focus})} onClick={this.handleMaximize}/>
+							<div id="closeButton" className={classNames({"focus": this.state.focus})} onClick={this.handleClose}/>
 						</div>
 					</div>
 					<div className="delimeter"/>

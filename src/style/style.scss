@@ -39,7 +39,7 @@ $color-black: #111111;
 	margin: 3px;
 	padding: 0 5px 5px 5px;
 
-	&-debug {
+	&-browser {
 		width: 600px;
 		height: 400px;
 		max-width: 600px;
@@ -67,6 +67,9 @@ $color-black: #111111;
 			-webkit-app-region: drag;
 			flex: 1;
 			height: 100%;
+			color: darken($color-gray, 10%);
+			font-size: 1rem;
+			padding-left: 3px;
 		}
 
 		.buttons {
