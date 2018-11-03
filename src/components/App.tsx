@@ -1,72 +1,10 @@
-import React, {Component} from "react";
-import {isRender, onElectronMessage, sendElectronMessage} from "../utils/communication";
+import React from "react";
+import Form from "./Form";
+import MainPage from "./MainPage";
 
-let classNames = require("classnames");
-const qr = require("qrcode");
-
-import packageJson from "../../package.json";
-
-class App extends Component<any, any> {
-	constructor(props: object) {
-		super(props);
-
-		this.state = {
-			focus: false
-		};
-	}
-
-	componentDidMount() {
-		onElectronMessage("hasLooseFocus", (event: any, looseFocus: boolean) => {
-			this.setState({focus: !looseFocus});
-		});
-	}
-
-	handleGenerate() {
-		let qrCanvas = document.getElementById("qrCanvas");
-		if (qrCanvas) {
-
-			// TODO to data --> state
-			qr.toCanvas(qrCanvas, "https://www.npmjs.com/package/qrcode#options", {errorCorrectionLevel: "H"});
-
-			qrCanvas.hidden = false;
-		}
-	}
-
-	handleMinimize() {
-		sendElectronMessage("minimize");
-	}
-
-	handleMaximize() {
-		sendElectronMessage("maximize");
-	}
-
-	handleClose() {
-		sendElectronMessage("close");
-	}
-
-	render() {
-		return (
-			<div className="main">
-				<div className={classNames({"form": true, "form-browser": !isRender()})}>
-					<div className="header">
-						<div className="toolbar">
-							<i>{`${packageJson.name} ${packageJson.version}`}</i>
-						</div>
-						<div className="buttons">
-							<div id="minimizeButton" className={classNames({"focus": this.state.focus})} onClick={this.handleMinimize}/>
-							<div id="maximizeButton" className={classNames({"focus": this.state.focus})} onClick={this.handleMaximize}/>
-							<div id="closeButton" className={classNames({"focus": this.state.focus})} onClick={this.handleClose}/>
-						</div>
-					</div>
-					<div className="delimeter"/>
-					<div className="content">
-						<button id="btn" className="btn btn-outline-success" onClick={this.handleGenerate}>Generate</button>
-						<canvas id="qrCanvas" hidden/>
-					</div>
-				</div>
-			</div>
-		);
-	}
-}
+let App = () =>
+	<Form>
+		<MainPage/>
+	</Form>;
 
 export default App;
