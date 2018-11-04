@@ -1,11 +1,18 @@
 import React, {Component} from "react";
-import {isRender, onElectronMessage, sendElectronMessage} from "../utils/communication";
+import {isRender, onElectronMessage, sendElectronMessage} from "../common/communication";
 
 let classNames = require("classnames");
 
 import packageJson from "../../package.json";
 
-class Form extends Component<any, any> {
+interface Props {
+}
+
+interface State {
+	focus: boolean
+}
+
+class Form extends Component<Props, State> {
 	constructor(props: object) {
 		super(props);
 
