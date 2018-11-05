@@ -4,7 +4,6 @@ import {getQrDataUrl} from "../utils/qrGenerator";
 import {onElectronMessage, sendElectronMessage} from "../common/communication";
 
 interface Props {
-
 }
 
 interface State {

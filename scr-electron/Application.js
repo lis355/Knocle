@@ -8,8 +8,15 @@ module.exports = class Application {
 
 	run() {
 		this.__ipc.on("getUrl", async (event, arg) => {
-			await this.__tunnel.open(arg[0]);
-			event.sender.send("url", this.__tunnel.getUrl());
+			let response;
+			try {
+				await this.__tunnel.open(arg[0]);
+				response = this.__tunnel.getUrl();
+			} catch (e) {
+				response = "Bad data";
+			}
+
+			event.sender.send("url", response);
 		});
 	}
 

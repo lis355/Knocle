@@ -1,13 +1,5 @@
 const ngrok = require("ngrok");
 
-(async () => {
-	// let r = await ngrok.connect("fds");
-	//
-	// console.log(r);
-
-})();
-
-
 module.exports = class Tunnel {
 	constructor() {
 		this.__url = "";
@@ -19,11 +11,7 @@ module.exports = class Tunnel {
 
 	async open(query) {
 		this.close();
-		try {
-			this.__url = await ngrok.connect(query);
-		} catch (e) {
-			console.log("bad parameters");
-		}
+		this.__url = await ngrok.connect(query);
 	}
 
 	async close() {
