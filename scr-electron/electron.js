@@ -1,5 +1,5 @@
 const {app, BrowserWindow, ipcMain, ipcRenderer} = require("electron");
-
+const ElectronMessaging = require("./ElectronMessagingMain");
 const Application = require("./Application");
 
 let mainWindow;
@@ -31,10 +31,11 @@ function createWindow() {
 	});
 
 	mainWindow.on("focus", event => {
-		mainWindow.webContents.send("hasLooseFocus", false);
+		ElectronMessaging.request(mainWindow, "hasLooseFocus", false);
 	});
+
 	mainWindow.on("blur", event => {
-		mainWindow.webContents.send("hasLooseFocus", true);
+		ElectronMessaging.request(mainWindow, "hasLooseFocus", true);
 	});
 
 	mainWindow.on("resize", event => {

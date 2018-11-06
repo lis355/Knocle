@@ -1,4 +1,5 @@
 const Tunnel = require("./ngrokWrapper");
+const ElectronMessaging = require("./ElectronMessagingMain");
 
 module.exports = class Application {
 	constructor(ipc) {
@@ -7,16 +8,14 @@ module.exports = class Application {
 	}
 
 	run() {
-		this.__ipc.on("getUrl", async (event, arg) => {
-			let response;
+		ElectronMessaging.registerRequest("getUrl", /*async*/ (port) => {
 			try {
-				await this.__tunnel.open(arg[0]);
-				response = this.__tunnel.getUrl();
+				return 1;
+				//await this.__tunnel.open(port);
+				return this.__tunnel.getUrl();
 			} catch (e) {
-				response = "Bad data";
+				return "Bad data";
 			}
-
-			event.sender.send("url", response);
 		});
 	}
 

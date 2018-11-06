@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 
+import * as ElectronMessaging from "../utils/ElectronMessagingRenderer";
+
 import {getQrDataUrl} from "../utils/qrGenerator";
-import {onElectronMessage, sendElectronMessage} from "../common/communication";
 
 interface Props {
 }
@@ -16,15 +17,12 @@ class MainPage extends Component<Props, State> {
 		super(props);
 
 		this.state = {};
-
-		onElectronMessage("url", (url: any) => {
-			console.log(url);
-			this.setState({url: url, qrDataUrl: getQrDataUrl(url)});
-		});
 	}
 
-	handleGenerate = () => {
-		sendElectronMessage("getUrl", 9000);
+	handleGenerate = async () => {
+		let url: any = await ElectronMessaging.request("getUrl", 9000);
+		console.log(url);
+		this.setState({url: url, qrDataUrl: getQrDataUrl(url)});
 	};
 
 	render() {

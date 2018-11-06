@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {isRender, onElectronMessage, sendElectronMessage} from "../common/communication";
 
 let classNames = require("classnames");
+import * as ElectronMessaging from "../utils/ElectronMessagingRenderer";
 
 import packageJson from "../../package.json";
 
@@ -22,27 +22,27 @@ class Form extends Component<Props, State> {
 	}
 
 	componentDidMount() {
-		onElectronMessage("hasLooseFocus", (event: any, looseFocus: boolean) => {
+		ElectronMessaging.registerRequest("hasLooseFocus", (looseFocus: boolean) => {
 			this.setState({focus: !looseFocus});
 		});
 	}
 
 	handleMinimize() {
-		sendElectronMessage("minimize");
+		ElectronMessaging.send("minimize");
 	}
 
 	handleMaximize() {
-		sendElectronMessage("maximize");
+		ElectronMessaging.send("maximize");
 	}
 
 	handleClose() {
-		sendElectronMessage("close");
+		ElectronMessaging.send("close");
 	}
 
 	render() {
 		return (
 			<div className="main">
-				<div className={classNames({"form": true, "form-browser": !isRender()})}>
+				<div className="form">
 					<div className="header">
 						<div className="toolbar">
 							<i>{`${packageJson.name} ${packageJson.version}`}</i>
