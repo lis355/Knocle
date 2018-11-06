@@ -1,5 +1,5 @@
-const {app, BrowserWindow, ipcMain, ipcRenderer} = require("electron");
-const ElectronMessaging = require("./ElectronMessagingMain");
+const {app, BrowserWindow} = require("electron");
+const ElectronMessaging = require("./utils/ElectronMessagingMain");
 const Application = require("./Application");
 
 let mainWindow;
@@ -31,11 +31,11 @@ function createWindow() {
 	});
 
 	mainWindow.on("focus", event => {
-		ElectronMessaging.request(mainWindow, "hasLooseFocus", false);
+		ElectronMessaging.callRenderer(mainWindow, "hasLooseFocus", false);
 	});
 
 	mainWindow.on("blur", event => {
-		ElectronMessaging.request(mainWindow, "hasLooseFocus", true);
+		ElectronMessaging.callRenderer(mainWindow, "hasLooseFocus", true);
 	});
 
 	mainWindow.on("resize", event => {
@@ -46,19 +46,19 @@ function createWindow() {
 		const pos = mainWindow.getBounds();
 	});
 
-	ipcMain.on("minimize", () => {
+	ElectronMessaging.answerRenderer("minimize", () => {
 		mainWindow.minimize();
 	});
 
-	ipcMain.on("maximize", () => {
+	ElectronMessaging.answerRenderer("maximize", () => {
 		mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
 	});
 
-	ipcMain.on("close", () => {
+	ElectronMessaging.answerRenderer("close", () => {
 		mainWindow.close();
 	});
 
-	application = new Application(ipcMain);
+	application = new Application();
 	application.run();
 }
 

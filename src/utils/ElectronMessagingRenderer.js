@@ -1,31 +1,50 @@
-let ipcRenderer = window.require("electron").ipcRenderer;
+const electron = window.require("electron");
+const ipc = electron.ipcRenderer;
 
-export function send(message, ...args) {
-	if (!ipcRenderer)
-		throw new Error("No ipcRenderer");
+let getResponseChannels = channel => ({
+	sendChannel: `%better-ipc-send-channel-${channel}`,
+	dataChannel: `%better-ipc-response-data-channel-${channel}`,
+	errorChannel: `%better-ipc-response-error-channel-${channel}`
+});
 
-	ipcRenderer.send(message, args);
-}
+let getRendererResponseChannels = (windowId, channel) => ({
+	sendChannel: `%better-ipc-send-channel-${windowId}-${channel}`,
+	dataChannel: `%better-ipc-response-data-channel-${windowId}-${channel}`,
+	errorChannel: `%better-ipc-response-error-channel-${windowId}-${channel}`
+});
 
-export async function request(message, ...args) {
+export function callMain(channel, data) {
 	return new Promise((resolve, reject) => {
-		if (!ipcRenderer)
-			reject("No ipcRenderer");
+		const {sendChannel, dataChannel, errorChannel} = getResponseChannels(channel);
 
-		ipcRenderer.once(message, (event, args) => {
-			resolve(args);
+		const cleanup = () => {
+			ipc.removeAllListeners(dataChannel);
+			ipc.removeAllListeners(errorChannel);
+		};
+
+		ipc.on(dataChannel, (event, result) => {
+			cleanup();
+			resolve(result);
 		});
 
-		send(message, ...args);
+		ipc.on(errorChannel, (event, error) => {
+			cleanup();
+			reject(error);
+		});
+
+		ipc.send(sendChannel, data);
 	});
 }
 
-export function registerRequest(message, callback) {
-	if (!ipcRenderer)
-		throw new Error("No ipcRenderer");
+export function answerMain(channel, callback) {
+	const window = electron.remote.getCurrentWindow();
+	const {sendChannel, dataChannel, errorChannel} = getRendererResponseChannels(window.id, channel);
 
-	ipcRenderer.on(message, async (event, args) => {
-		let response = await callback(...args);
-		event.sender.send(message, response);
+	ipc.on(sendChannel, async (event, data) => {
+		try {
+			ipc.send(dataChannel, await callback(data));
+		} catch (err) {
+			ipc.send(errorChannel, err);
+		}
 	});
 }

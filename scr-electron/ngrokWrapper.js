@@ -10,7 +10,7 @@ module.exports = class Tunnel {
 	}
 
 	async open(query) {
-		this.close();
+		await this.close();
 		this.__url = await ngrok.connect(query);
 	}
 

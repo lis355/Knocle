@@ -22,21 +22,21 @@ class Form extends Component<Props, State> {
 	}
 
 	componentDidMount() {
-		ElectronMessaging.registerRequest("hasLooseFocus", (looseFocus: boolean) => {
+		ElectronMessaging.answerMain("hasLooseFocus", (looseFocus: boolean) => {
 			this.setState({focus: !looseFocus});
 		});
 	}
 
 	handleMinimize() {
-		ElectronMessaging.send("minimize");
+		ElectronMessaging.callMain("minimize");
 	}
 
 	handleMaximize() {
-		ElectronMessaging.send("maximize");
+		ElectronMessaging.callMain("maximize");
 	}
 
 	handleClose() {
-		ElectronMessaging.send("close");
+		ElectronMessaging.callMain("close");
 	}
 
 	render() {

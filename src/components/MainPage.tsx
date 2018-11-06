@@ -20,7 +20,7 @@ class MainPage extends Component<Props, State> {
 	}
 
 	handleGenerate = async () => {
-		let url: any = await ElectronMessaging.request("getUrl", 9000);
+		let url: any = await ElectronMessaging.callMain("getUrl", 9000);
 		console.log(url);
 		this.setState({url: url, qrDataUrl: getQrDataUrl(url)});
 	};
