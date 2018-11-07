@@ -144,3 +144,19 @@ $color-black: #111111;
 	border: 1px solid black;
 	margin: 20px;
 }
+
+.link-item {
+	span {
+		user-select: none;
+	}
+
+	input {
+		font-style: italic;
+	}
+
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		appearance: none;
+		margin: 0;
+	}
+}
