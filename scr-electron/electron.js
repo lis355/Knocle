@@ -1,6 +1,4 @@
-const {app, BrowserWindow, ipcMain, ipcRenderer} = require("electron");
-
-const Application = require("./Application");
+const { app, BrowserWindow, ipcMain, ipcRenderer } = require("electron");
 
 let mainWindow;
 let application;
@@ -26,7 +24,7 @@ function createWindow() {
 		mainWindow.show();
 	});
 
-	mainWindow.on("closed", function () {
+	mainWindow.on("closed", () => {
 		mainWindow = null;
 	});
 
@@ -66,23 +64,17 @@ function createWindow() {
 	// 	console.log(arg) // prints "ping"
 	// 	event.returnValue = 'pong'
 	// })
-
-	application = new Application(ipcMain);
-	application.run();
 }
 
 app.on("ready", createWindow);
 
-app.on("window-all-closed", function () {
-	if (process.platform !== "darwin") {
-		if (application)
-			application.stop();
+app.on("window-all-closed", () => {
+	if (application) application.stop();
 
-		app.quit();
-	}
+	app.quit();
 });
 
-app.on("activate", function () {
+app.on("activate", () => {
 	if (mainWindow === null) {
 		createWindow();
 	}
